@@ -1,29 +1,24 @@
 class Solution:
+    def helper(self,s,i,num,sign):
+        INT_MAX = 2**31 - 1
+        INT_MIN = -2**31
+      
+        if i>=len(s) or not s[i].isdigit():
+            return sign*num
+        digit = int(s[i])
+        if num > (INT_MAX - digit) // 10:
+            return INT_MAX if sign == 1 else INT_MIN
+        num=num*10+int(s[i])
+        return self.helper(s,i+1,num,sign)
 
     def myAtoi(self, s):
-        s = s.strip()  # Remove leading/trailing spaces
-        if not s:
-            return 0
-
-        sign, i, res = 1, 0, 0
-
-        # Check for sign
-        if s[0] == '-':
-            sign = -1
-            i += 1
-        elif s[0] == '+':
-            i += 1
-
-        while i < len(s) and s[i].isdigit():
-            res = res * 10 + int(s[i])
-
-            # Handle overflow
-            if sign * res > 2**31 - 1:
-                return 2**31 - 1
-            if sign * res < -2**31:
-                return -2**31
-
-            i += 1
-
-        return sign * res
+        i=0
+        while i<len(s) and s[i]==' ':
+            i+=1
+        sign=1
+        if i<len(s) and (s[i]=='+' or s[i]=='-'):
+            sign=-1 if s[i]=='-' else 1
+            i+=1
+        return self.helper(s,i,0,sign)
+        
         
